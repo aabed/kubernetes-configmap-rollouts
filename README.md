@@ -1,6 +1,6 @@
 # kubernetes-configmap-rollouts
 
-A Bash script that will continuously poll **Kubernetes** api for **configmaps** changes in the current namespace and start a rollout on the deployments using those configmaps
+A Bash script that will query **Kubernetes** watch api for **configmaps** changes in the current namespace and start a rollout on the deployments using those configmaps
 
 ## Installation
 
