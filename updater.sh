@@ -10,7 +10,7 @@ export version=`echo $line |cut -d : -f2`
 echo "Rerolling Deployments that use ConfigMap: $cm_name"
 kubectl --namespace=$MY_POD_NAMESPACE get deployments -o json  |\
 # filter by deployments that use the updated configmap
-jq  --unbuffered   '.items[]|select(.spec.template.spec.containers[]?.env[]?.valueFrom.configMapKeyRef.name == env.cm_name or .spec.template.spec.containers[]?.envFrom[]?.configMapRef.name == env.cm_name)|.metadata.name' |\
+jq  --unbuffered   '.items[]|select(.spec.template.spec.containers[]?.env[]?.valueFrom.configMapKeyRef.name == env.cm_name), select(.spec.template.spec.containers[]?.envFrom[]?.configMapRef.name == env.cm_name)|.metadata.name' |\
 # get rid of duplicates
 uniq |\
 # trigger deployment rollouts
@@ -24,7 +24,7 @@ export version=`echo $line |cut -d : -f2`
 echo "Rerolling Deployments that use Secrets: $cm_name"
 kubectl --namespace=$MY_POD_NAMESPACE get deployments -o json  |\
 # filter by deployments that use the updated secret
-jq  --unbuffered   '.items[]|select(.spec.template.spec.containers[]?.env[]?.valueFrom.secretKeyRef.name == env.cm_name or .spec.template.spec.containers[]?.envFrom[]?.secretRef.name == env.cm_name)|.metadata.name' |\
+jq  --unbuffered   '.items[]|select(.spec.template.spec.containers[]?.env[]?.valueFrom.secretKeyRef.name == env.cm_name), select(.spec.template.spec.containers[]?.envFrom[]?.secretRef.name == env.cm_name)|.metadata.name' |\
 # get rid of duplicates
 uniq |\
 # trigger deployment rollouts
